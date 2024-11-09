@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.carousel-item>iframe{
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+}
+
+.wrapper{
+    height: 600px;
+    overflow-y: scroll;
+    margin-bottom: 100px;
+}
+
+.footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+
+}
+
+@media only screen and (max-width: 450px) {
+
+    .carousel-item>iframe{
+        width: 370px;
+        height: 200px;
+    }
+    
+}
+
+
