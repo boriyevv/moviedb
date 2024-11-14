@@ -6,7 +6,14 @@ let modalList = document.querySelector('.modal-list')
 let form = document.querySelector('.form')
 let select = form.select
 
+let prev = document.querySelector('.prev')
+let next = document.querySelector('.next')
+let prevText = document.querySelector('.prev-text')
+let text = document.querySelector('.text')
+let nextText = document.querySelector('.next-text')
 
+let count = 1
+let categoryData = ''
 
 category.forEach(item => {
     item.addEventListener('click', () => {
@@ -16,8 +23,11 @@ category.forEach(item => {
 })
 
 
-async function getdata(key = 'popular', page = 2) {
-    let data = await fetch(`https://api.themoviedb.org/3/movie/${key}?language=en-US&page=1`, {
+async function getdata(key = 'upcoming', page=1) {
+
+    categoryData=key
+
+    let data = await fetch(`https://api.themoviedb.org/3/movie/${key}?language=en-US&page=${page}`, {
         method: 'GET',
         headers: {
             accept: 'application/json',
@@ -60,12 +70,14 @@ async function getdata(key = 'popular', page = 2) {
         render(sorted)
         console.log(sorted)
 
-        
+
     })
 
 
 }
 getdata()
+
+
 
 let favouriteMovies = []
 
@@ -73,8 +85,8 @@ let favouriteMovies = []
 function render(movies) {
     wrapper.innerHTML = null
 
-    for (let i=0; i<movies.length; i++) {
-        // console.log(i)
+    for (let i = 0; i < movies.length; i++) {
+        // console.log(movies[i])
         let card = document.createElement('div')
         card.setAttribute('style', 'width: 18rem;')
         card.setAttribute('class', 'card')
@@ -102,11 +114,11 @@ function render(movies) {
 
 }
 
-render()
+// render()
 
 
 
-function addLikes(arr){
+function addLikes(arr) {
     console.log(arr)
 
     favouriteMovies.push(arr)
@@ -116,12 +128,12 @@ function addLikes(arr){
     localRender()
 }
 
-function localRender(){
+function localRender() {
     let localMovies = localStorage.getItem('movies') ? JSON.parse(localStorage.getItem('movies')) : []
 
     modalList.innerHTML = null
 
-    for(i of localMovies){
+    for (i of localMovies) {
         console.log(i)
         let li = document.createElement('li')
 
@@ -131,4 +143,34 @@ function localRender(){
     }
 
 }
+
+
+next.addEventListener('click', () => {
+    count += 1
+    getdata(categoryData, count)
+    updateText()
+
+})
+
+function updateText(){
+
+    text.textContent = count
+    prevText.textContent =(count-1)
+    nextText.textContent = (count+1)
+
+}
+
+prev.addEventListener('click', () => {
+    if(count > 1){
+        count -=1
+        getdata(categoryData, count)
+    }
+    updateText()
+})
+
+
+
+
+
+
 
